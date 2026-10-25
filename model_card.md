@@ -1,111 +1,53 @@
-# 🎧 Model Card: Music Recommender Simulation
+# Model Card: VibeFinder
 
-## 1. Model Name  
+## 1. Model Name
 
-Give your model a short, descriptive name.  
-Example: **VibeFinder 1.0**  
+**VibeFinder** is a small music recommendation simulation.
 
----
+## 2. Goal / Task
 
-## 2. Intended Use  
+VibeFinder ranks songs for a listener. It uses the listener's favorite genre, mood, and energy level to suggest the top songs.
 
-Describe what your recommender is designed to do and who it is for. 
+## 3. Data Used
 
-Prompts:  
+The catalog has 18 songs. Each song has a genre, mood, energy, tempo, valence, danceability, and acousticness. The catalog is small, and most genres have only one song. It does not include every style of music or every part of a person's taste.
 
-- What kind of recommendations does it generate  
-- What assumptions does it make about the user  
-- Is this for real users or classroom exploration  
+## 4. Algorithm Summary
 
----
+The recommender gives **1 point** for a genre match and **1 point** for a mood match. Energy can earn up to **2 points**: the closer the song's energy is to the listener's target, the more points it gets. An optional acoustic preference can add **0.5 point**. The songs with the highest total scores are listed first.
 
-## 3. How the Model Works  
+## 5. Observed Behavior / Biases
 
-Explain your scoring approach in simple language.  
+Gym Hero can appear for someone who wants happy pop because it matches pop and has high energy, even though its mood is intense. Energy is worth more than genre or mood in the current experiment, so energetic songs can rank well without matching the listener's other preferences. The catalog is small and has few songs for many genres, so some listeners have fewer good choices. The system also checks exact genre and mood labels, so it can miss songs that are similar but labeled differently.
 
-Prompts:  
+## 6. Evaluation Process
 
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
+I tested four profiles: High-Energy Pop, Chill Lofi, Deep Intense Rock, and Conflicting Metal (metal genre, chill mood, low energy). I also tested a weight change: genre went from 2 points to 1, and energy went from a maximum of 1 point to 2. I compared the top five songs and checked their scores and reasons.
 
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
+High-Energy Pop and Chill Lofi gave different results. Sunrise City and Gym Hero ranked high for pop, while Midnight Coding and Library Rain ranked high for lofi. This makes sense because their genres, moods, and energy levels fit the different profiles.
 
----
+High-Energy Pop and Deep Intense Rock both included Gym Hero. It matched pop and high energy for the first profile, and intense mood and high energy for the second. Sunrise City ranked higher for pop, while Storm Runner ranked higher for rock, because each matched more of its profile.
 
-## 4. Data  
+High-Energy Pop and Conflicting Metal preferred different energy levels. Energetic songs appeared in the pop list, while calmer songs led the conflicting profile. This fits the low energy and chill mood requested by that profile.
 
-Describe the dataset the model uses.  
+Chill Lofi and Deep Intense Rock also had different leaders: lofi songs led for the chill profile, while Storm Runner led for rock. Their genre, mood, and energy preferences point to different songs.
 
-Prompts:  
+Chill Lofi and Conflicting Metal both favored some chill songs. The lofi profile placed lofi songs first because it matched their genre, while the conflicting profile put Spacewalk Thoughts first because of its calm mood and low energy.
 
-- How many songs are in the catalog  
-- What genres or moods are represented  
-- Did you add or remove data  
-- Are there parts of musical taste missing in the dataset  
+Deep Intense Rock and Conflicting Metal had different leaders. Storm Runner matched the rock and intense preferences; Spacewalk Thoughts better matched the conflicting profile's chill mood and low energy.
 
----
+The weight change made Spacewalk Thoughts beat Heavy Weather for the Conflicting Metal profile. That seems more fitting for its chill mood and low energy, but it only shows that the results changed for this example. It does not prove the system is more accurate for everyone.
 
-## 5. Strengths  
+## 7. Intended Use and Non-Intended Use
 
-Where does your system seem to work well  
+This project is for learning how a simple recommender scores and ranks songs. It is not meant to make serious or personalized recommendations for real music listeners. It does not learn from listening history, understand songs, or know whether someone will actually enjoy a track.
 
-Prompts:  
+## 8. Ideas for Improvement
 
-- User types for which it gives reasonable results  
-- Any patterns you think your scoring captures correctly  
-- Cases where the recommendations matched your intuition  
+- Add more songs and include more examples from each genre.
+- Use related genre and mood labels instead of requiring exact matches.
+- Add a variety rule so one kind of song does not take over the whole list.
 
----
+## 9. Personal Reflection
 
-## 6. Limitations and Bias 
-
-Where the system struggles or behaves unfairly. 
-
-Prompts:  
-
-- Features it does not consider  
-- Genres or moods that are underrepresented  
-- Cases where the system overfits to one preference  
-- Ways the scoring might unintentionally favor some users  
-
----
-
-## 7. Evaluation  
-
-How you checked whether the recommender behaved as expected. 
-
-Prompts:  
-
-- Which user profiles you tested  
-- What you looked for in the recommendations  
-- What surprised you  
-- Any simple tests or comparisons you ran  
-
-No need for numeric metrics unless you created some.
-
----
-
-## 8. Future Work  
-
-Ideas for how you would improve the model next.  
-
-Prompts:  
-
-- Additional features or preferences  
-- Better ways to explain recommendations  
-- Improving diversity among the top results  
-- Handling more complex user tastes  
-
----
-
-## 9. Personal Reflection  
-
-A few sentences about your experience.  
-
-Prompts:  
-
-- What you learned about recommender systems  
-- Something unexpected or interesting you discovered  
-- How this changed the way you think about music recommendation apps  
+My biggest learning moment was seeing how changing a few point values changed the rankings. The AI assistant helped me write and test the code, but I needed to run it and check the scores so the README and model card matched the real output. I was surprised that a simple score can feel like a recommendation when it gives a clear reason for each result. If I kept working on this, I would add more songs and try to make the recommendations more varied.
