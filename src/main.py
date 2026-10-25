@@ -17,14 +17,27 @@ def main() -> None:
     songs = load_songs("data/songs.csv")
     print(f"Loaded songs: {len(songs)}")
 
-    user_prefs = {"genre": "pop", "mood": "happy", "energy": 0.8}
+    profiles = {
+        "High-Energy Pop": {"genre": "pop", "mood": "happy", "energy": 0.95},
+        "Chill Lofi": {"genre": "lofi", "mood": "chill", "energy": 0.40},
+        "Deep Intense Rock": {"genre": "rock", "mood": "intense", "energy": 0.90},
+        "Edge Case - Conflicting Metal": {
+            "genre": "metal",
+            "mood": "chill",
+            "energy": 0.10,
+        },
+    }
 
-    recommendations = recommend_songs(user_prefs, songs, k=5)
-
-    print("\nTop recommendations (genre=pop, mood=happy, energy=0.8):")
-    for rank, (song, score, explanation) in enumerate(recommendations, start=1):
-        print(f"{rank}. {song['title']} - Score: {score:.2f}")
-        print(f"   Reasons: {explanation}")
+    for profile_name, user_prefs in profiles.items():
+        recommendations = recommend_songs(user_prefs, songs, k=5)
+        print(
+            f"\n{profile_name} "
+            f"(genre={user_prefs['genre']}, mood={user_prefs['mood']}, "
+            f"energy={user_prefs['energy']:.2f}):"
+        )
+        for rank, (song, score, explanation) in enumerate(recommendations, start=1):
+            print(f"{rank}. {song['title']} - Score: {score:.2f}")
+            print(f"   Reasons: {explanation}")
 
 
 if __name__ == "__main__":

@@ -3,9 +3,9 @@ from typing import List, Dict, Tuple
 from dataclasses import dataclass
 
 
-GENRE_MATCH_POINTS = 2.0
+GENRE_MATCH_POINTS = 1.0
 MOOD_MATCH_POINTS = 1.0
-MAX_ENERGY_SIMILARITY_POINTS = 1.0
+MAX_ENERGY_SIMILARITY_POINTS = 2.0
 ACOUSTIC_MATCH_POINTS = 0.5
 
 

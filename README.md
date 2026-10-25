@@ -21,12 +21,12 @@ My plan is to read the user's preferences and the songs from the CSV file. Then 
 
 My finalized Algorithm Recipe is:
 
-- **+2.0 points** if the genre matches.
+- **+1.0 point** if the genre matches.
 - **+1.0 point** if the mood matches.
-- **Up to +1.0 point** for energy. The closer the song's energy is to the user's target, the more points it gets.
+- **Up to +2.0 points** for energy. The closer the song's energy is to the user's target, the more points it gets.
 - **Optional +0.5 point** if the song's acousticness matches the user's acoustic preference. A song with acousticness of 0.5 or higher counts as acoustic.
 
-The program adds the points together and recommends the songs with the highest scores. Genre is worth more than mood, so the system might over-prioritize genre and miss a great song that matches the user's mood instead. The catalog is also small, so it may not include enough music to fit everyone's taste.
+The program adds the points together and recommends the songs with the highest scores. This experiment gives energy twice as much weight as before and cuts the genre weight in half. The catalog is small, so it may not include enough music to fit everyone's taste.
 
 The `Song` object will use these features:
 
@@ -94,22 +94,58 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Here is the output from running `python -m src.main`:
+Here is the output from running `python -m src.main` with three different profiles and one conflicting edge case, using the experimental weights:
 
 ```
 Loaded songs: 18
 
-Top recommendations (genre=pop, mood=happy, energy=0.8):
-1. Sunrise City - Score: 3.98
-   Reasons: genre match (+2.0); mood match (+1.0); energy similarity (+0.98)
-2. Gym Hero - Score: 2.87
-   Reasons: genre match (+2.0); energy similarity (+0.87)
-3. Rooftop Lights - Score: 1.96
-   Reasons: mood match (+1.0); energy similarity (+0.96)
-4. Sunday Market - Score: 0.96
-   Reasons: energy similarity (+0.96)
-5. Night Drive Loop - Score: 0.95
-   Reasons: energy similarity (+0.95)
+High-Energy Pop (genre=pop, mood=happy, energy=0.95):
+1. Sunrise City - Score: 3.74
+   Reasons: genre match (+1.0); mood match (+1.0); energy similarity (+1.74)
+2. Gym Hero - Score: 2.96
+   Reasons: genre match (+1.0); energy similarity (+1.96)
+3. Rooftop Lights - Score: 2.62
+   Reasons: mood match (+1.0); energy similarity (+1.62)
+4. Heavy Weather - Score: 1.98
+   Reasons: energy similarity (+1.98)
+5. Storm Runner - Score: 1.92
+   Reasons: energy similarity (+1.92)
+
+Chill Lofi (genre=lofi, mood=chill, energy=0.40):
+1. Midnight Coding - Score: 3.96
+   Reasons: genre match (+1.0); mood match (+1.0); energy similarity (+1.96)
+2. Library Rain - Score: 3.90
+   Reasons: genre match (+1.0); mood match (+1.0); energy similarity (+1.90)
+3. Focus Flow - Score: 3.00
+   Reasons: genre match (+1.0); energy similarity (+2.00)
+4. Spacewalk Thoughts - Score: 2.76
+   Reasons: mood match (+1.0); energy similarity (+1.76)
+5. Coffee Shop Stories - Score: 1.94
+   Reasons: energy similarity (+1.94)
+
+Deep Intense Rock (genre=rock, mood=intense, energy=0.90):
+1. Storm Runner - Score: 3.98
+   Reasons: genre match (+1.0); mood match (+1.0); energy similarity (+1.98)
+2. Gym Hero - Score: 2.94
+   Reasons: mood match (+1.0); energy similarity (+1.94)
+3. Heavy Weather - Score: 1.88
+   Reasons: energy similarity (+1.88)
+4. Sunday Market - Score: 1.88
+   Reasons: energy similarity (+1.88)
+5. Sunrise City - Score: 1.84
+   Reasons: energy similarity (+1.84)
+
+Edge Case - Conflicting Metal (genre=metal, mood=chill, energy=0.10):
+1. Spacewalk Thoughts - Score: 2.64
+   Reasons: mood match (+1.0); energy similarity (+1.64)
+2. Library Rain - Score: 2.50
+   Reasons: mood match (+1.0); energy similarity (+1.50)
+3. Midnight Coding - Score: 2.36
+   Reasons: mood match (+1.0); energy similarity (+1.36)
+4. Quiet Pines - Score: 1.56
+   Reasons: energy similarity (+1.56)
+5. Coffee Shop Stories - Score: 1.46
+   Reasons: energy similarity (+1.46)
 ```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
@@ -118,11 +154,9 @@ Top recommendations (genre=pop, mood=happy, energy=0.8):
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
+The results mostly feel right to me: Midnight Coding and Library Rain lead for the chill lofi listener, and Storm Runner leads for the intense rock listener. With the new weights, Sunrise City ranks first for High-Energy Pop because it matches both genre (+1.0) and mood (+1.0), then earns +1.74 for its energy being close to 0.95.
 
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+The weight shift changed the edge-case ranking: Spacewalk Thoughts now comes first because its chill mood and low energy score higher together than Heavy Weather's metal genre match. That seems more accurate for this particular conflicting profile, but it is only a small example and doesn't prove the recommendations are generally more accurate. It is definitely different: energy has more influence now, so songs with a close energy can rank higher even when their genre does not match. The same songs can also appear in multiple lists because the system does not enforce variety.
 
 ---
 

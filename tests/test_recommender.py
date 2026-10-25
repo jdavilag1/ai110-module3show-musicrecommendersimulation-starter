@@ -75,18 +75,18 @@ def test_score_song_uses_weighted_genre_mood_and_energy():
 
     score, reasons = core_song(user, song)
 
-    assert score == 3.9
+    assert score == 3.8
     assert reasons == [
-        "genre match (+2.0)",
+        "genre match (+1.0)",
         "mood match (+1.0)",
-        "energy similarity (+0.90)",
+        "energy similarity (+1.80)",
     ]
     assert score_song(user, song) == (score, reasons)
 
 
 def test_recommend_songs_ranks_highest_score_first():
     songs = [
-        {"title": "Mood only", "genre": "pop", "mood": "intense", "energy": 0.9},
+        {"title": "Mood only", "genre": "pop", "mood": "intense", "energy": 0.8},
         {"title": "Genre and energy", "genre": "rock", "mood": "chill", "energy": 0.9},
     ]
     user = {"genre": "rock", "mood": "intense", "energy": 0.9}
