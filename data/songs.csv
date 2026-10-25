@@ -9,3 +9,11 @@ id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
 8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
 9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
 10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
+11,Open Road Home,June Wilder,country,nostalgic,0.58,104,0.67,0.64,0.52
+12,Golden Hour Dub,Island Current,reggae,laid-back,0.62,86,0.78,0.81,0.33
+13,Velvet Letters,Amara Blue,R&B,romantic,0.49,92,0.72,0.68,0.44
+14,Clockwork Waltz,North Hall Quartet,classical,dramatic,0.67,136,0.55,0.31,0.74
+15,Sunday Market,The Pocket Change,funk,playful,0.84,112,0.88,0.91,0.12
+16,Quiet Pines,Rowan & Reed,folk,reflective,0.32,76,0.46,0.43,0.93
+17,Heavy Weather,Iron Orchard,metal,aggressive,0.96,168,0.30,0.52,0.03
+18,Last Train Blues,Cal Mercer,blues,melancholy,0.45,68,0.28,0.38,0.81

@@ -1,4 +1,12 @@
-from src.recommender import Song, UserProfile, Recommender
+from src.recommender import (
+    Recommender,
+    Song,
+    UserProfile,
+    core_song,
+    load_songs,
+    recommend_songs,
+    score_song,
+)
 
 def make_small_recommender() -> Recommender:
     songs = [
@@ -59,3 +67,41 @@ def test_explain_recommendation_returns_non_empty_string():
     explanation = rec.explain_recommendation(user, song)
     assert isinstance(explanation, str)
     assert explanation.strip() != ""
+
+
+def test_score_song_uses_weighted_genre_mood_and_energy():
+    user = {"genre": "rock", "mood": "intense", "energy": 0.9}
+    song = {"genre": "rock", "mood": "intense", "energy": 0.8}
+
+    score, reasons = core_song(user, song)
+
+    assert score == 3.9
+    assert reasons == [
+        "genre match (+2.0)",
+        "mood match (+1.0)",
+        "energy similarity (+0.90)",
+    ]
+    assert score_song(user, song) == (score, reasons)
+
+
+def test_recommend_songs_ranks_highest_score_first():
+    songs = [
+        {"title": "Mood only", "genre": "pop", "mood": "intense", "energy": 0.9},
+        {"title": "Genre and energy", "genre": "rock", "mood": "chill", "energy": 0.9},
+    ]
+    user = {"genre": "rock", "mood": "intense", "energy": 0.9}
+
+    results = recommend_songs(user, songs, k=2)
+
+    assert [song["title"] for song, _, _ in results] == [
+        "Genre and energy",
+        "Mood only",
+    ]
+
+
+def test_load_songs_reads_numeric_csv_fields():
+    songs = load_songs("data/songs.csv")
+
+    assert len(songs) == 18
+    assert songs[0]["id"] == 1
+    assert songs[0]["energy"] == 0.82
